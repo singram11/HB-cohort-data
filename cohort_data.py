@@ -60,7 +60,7 @@ def students_by_cohort(filename, cohort='All'):
     students = []
 
     for line in my_file:
-        person = line.split("|")
+        person = line.rstrip().split("|")
         if person[2] != "":
           if (cohort == "All" or person[-1] == cohort):
             full_name = person[0] + " " + person[1]
@@ -108,9 +108,37 @@ def all_names_by_house(filename):
     ghosts = []
     instructors = []
 
-    # TODO: replace this with your code
+    my_file = open(filename)
 
-    return []
+    for line in my_file:
+        person = line.rstrip().split("|")
+        full_name = person[0] + " " + person[1]
+        if person[2] == "":
+            if person[4] == "I":
+                instructors.append(full_name) 
+            else:
+                ghosts.append(full_name)
+        else:
+            if person[2] == "Dumbledore's Army":
+                dumbledores_army.append(full_name)
+            elif person[2] == "Gryffindor":
+                gryffindor.append(full_name)
+            elif person[2] == "Hufflepuff":
+                hufflepuff.append(full_name)
+            elif person[2] == "Ravenclaw":
+                ravenclaw.append(full_name)
+            elif person[2] == "Slytherin":
+                slytherin.append(full_name)
+
+
+    return [sorted(dumbledores_army),
+            sorted(gryffindor),
+            sorted(hufflepuff),
+            sorted(ravenclaw),
+            sorted(slytherin),
+            sorted(ghosts),
+            sorted(instructors)
+    ]
 
 
 def all_data(filename):
@@ -131,10 +159,12 @@ def all_data(filename):
     Return:
       - list[tuple]: a list of tuples
     """
-
+    my_file = open(filename)
     all_data = []
 
-    # TODO: replace this with your code
+    for line in my_file:
+        person = line.rstrip().split("|")
+        all_data.append((person[0] + " " + person[1], person[2], person[3], person[4]))
 
     return all_data
 
@@ -160,7 +190,13 @@ def get_cohort_for(filename, name):
       - str: the person's cohort or None
     """
 
-    # TODO: replace this with your code
+    student_data = all_data(filename) 
+
+    for student in student_data:
+        if name == student[0]:
+            return student[3]
+    
+    return 
 
 
 def find_duped_last_names(filename):
